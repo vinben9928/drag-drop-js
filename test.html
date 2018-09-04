@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Drag & Drop test</title>
+
+        <!-- Include jQuery before Drag & Drop library. -->
+        <script type="text/javascript" src="scripts/jquery-3.3.1.min.js"></script>
+        <script type="text/javascript" src="scripts/dragdrop.js"></script>
+
+        <style type="text/css">
+            .rowOfBoxes
+            {
+                display: flex;
+            }
+
+            .dropTarget, .someOtherClass
+            {
+                flex: 1;
+                height: 230px;
+                width: 230px;
+                border: 1px solid #000000;
+            }
+
+            .someOtherClass
+            {
+                background: #FF0000;
+            }
+
+            .someBox
+            {
+                background: #00CC00;
+                width: 75px;
+                height: 75px;
+                text-align: center;
+                line-height: 75px; /* Center text vertically. */
+            }
+        </style>
+    </head>
+    <body>
+        <div class="rowOfBoxes">
+            <div class="dropTarget"></div>
+
+            <div class="dropTarget">
+                <div id="dragMe" class="someBox">Drag me</div>
+            </div>
+
+            <div class="dropTarget"></div>
+            <div class="dropTarget"></div>
+            <div class="dropTarget"></div>
+            <div class="dropTarget"></div>
+        </div>
+
+        <div class="rowOfBoxes">
+            <div class="dropTarget"></div>
+            <div class="dropTarget"></div>
+            <div class="dropTarget"></div>
+            <div class="dropTarget"></div>
+            <div class="someOtherClass"></div>
+            <div class="dropTarget"></div>
+        </div>
+
+        <script type="text/javascript">
+            const box = document.getElementById("dragMe");
+            
+            /*
+            makeDraggable(element, onDrop, [Optional] onBeginDrag)
+
+            - element     : The element to make drag-/droppable.
+            - onDrop      : A callback function executed when the user drops the element.
+                            Parameters:
+                                onDrop(event, element, droppedOn)
+
+                                - event     : MouseUp event object.
+                                - element   : The element that was dropped.
+                                - droppedOn : The element that 'element' was dropped onto.
+            
+            - onBeginDrag : Optional. A callback function executed when the user begins to drag the element.
+                            Return 'true' to STOP the element from being dragged.
+                            Parameters:
+                                onBeginDrag(event)
+
+                                - event: MouseDown event object.
+            */
+
+            makeDraggable(box, function(event, element, droppedOn) { //onDrop callback function.
+
+                                   //Null check. Do not continue if droppedOn is null.
+                                   if(droppedOn == null) { return; }
+
+                                   //If droppedOn does not contain the 'dropTarget' class then do not continue.
+                                   if(droppedOn.classList.contains("dropTarget") == false) { return; }
+
+                                   //Move dragged element:
+                                   //Remove dragged element from original parent.
+                                   element.parentElement.removeChild(element);
+
+                                   //Add dragged element to droppedOn.
+                                   droppedOn.appendChild(element);
+                               });
+        </script>
+    </body>
+</html>
